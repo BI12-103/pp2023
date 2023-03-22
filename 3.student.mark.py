@@ -1,13 +1,24 @@
 from math import floor #floor() can not round to 1 decimal place in python 3, so I just import it then use round() instead
 import numpy as np
+import curses
+from curses import wrapper
 
 
 class Student:
     #Hide student's informations
-    def __init__(self,n):
-        self.__ID = input(f"Input id of student number {n}: ")
-        self.__Name = input(f"Input name of student number {n}: ")
-        self.__DoB = input(f"Input DoB of student {n}: ")
+    def __init__(self,n,stdscr):
+        stdscr.clear()
+        stdscr.addstr(f"Input id of student number {n}: ")
+        stdscr.refresh()
+        self.__ID = stdscr.getstr(10).decode()
+
+        stdscr.addstr(f"Input name of student number {n}: ")
+        stdscr.refresh()
+        self.__Name = stdscr.getstr(100).decode()
+
+        stdscr.addstr(f"Input DoB of student {n}: ")
+        stdscr.refresh()
+        self.__DoB = stdscr.getstr(30).decode()
     
     def __str__(self):
         return f"ID: {self.getID()}\nName: {self.getName()}\nDate of birth: {self.getDoB()}\n"
@@ -29,9 +40,15 @@ class Student:
         return self.__DoB
 
 class Course:
-    def __init__(self,n):
-        self.ID = input(f"Input id of course number {n}: ")
-        self.Name = input(f"Input name of course {n}: ")
+    def __init__(self,n,stdscr):
+        stdscr.clear()
+        stdscr.addstr(f"Input id of course number {n}: ")
+        stdscr.refresh()
+        self.ID = stdscr.getstr(10).decode()
+
+        stdscr.addstr(f"Input name of course {n}: ")
+        stdscr.refresh()
+        self.Name = stdscr.getstr(100).decode()
     def __str__(self):
         return f"Course ID: {self.ID}\nCourse name: {self.Name}\n"
     def __IDdub__(self,check):
@@ -48,8 +65,7 @@ class Marks:
         self.__stID = ID
         self.__stName = Name
         self.__mark = mark
-    # def setCourse(self,crse):
-    #     self.course.append = crse
+
     def getID(self):
         return self.__stID
     def getName(self):
@@ -57,34 +73,34 @@ class Marks:
     def getMark(self):
         return self.__mark
     
-    #Dub = false, not dub = true
-    # def __IDnotdub__(self,check):
-    #     if check in self.course:
-    #         return True
-    #     else:
-    #         return False
-        
+
     def __str__(self,n):
         if n not in self.k:
             self.k.append(n)
-            return f"Course: {self.course[n]}\nID: {self.getID()}\nName: {self.getName()}\nMark: {self.getMark()}\n"
+            return f"\nCourse: {self.course[n]}\nID: {self.getID()}\nName: {self.getName()}\nMark: {self.getMark()}\n"
         else:
             return f"ID: {self.getID()}\nName: {self.getName()}\nMark: {self.getMark()}\n"
 
 
 #Input attributes for students
-def inputSt(Sts):
+def inputSt(Sts,stdscr):
     stList = Sts
 
     #Input number of students
     while True:
         try:
-            print("Input number of students: ")
-            numSt = int(input())
+            stdscr.clear()
+            stdscr.addstr("Input number of students: ")
+            stdscr.refresh()
+            numSt = stdscr.getstr(4)
+            numSt = int(numSt)
             while numSt<0:
-                print("Error!")
-                print("Input number of students: ")
-                numSt = int(input())
+                stdscr.clear()
+                stdscr.addstr("Error!")
+                stdscr.addstr("\nInput number of students: ")
+                stdscr.refresh()
+                numSt = stdscr.getstr(4)
+                numSt = int(numSt)
             break
         except ValueError:
             pass
@@ -98,10 +114,12 @@ def inputSt(Sts):
         if len(stList) == newNumST:
             break
         #Input and check if ID is dub
-        temp = Student(len(stList)+1)
+        temp = Student(len(stList)+1,stdscr)
         for i in range(len(stList)):
             if (stList[i]).__IDdub__(temp.getID()):
-                print(f"This ID \"{temp.getID()}\" is taken!\nPlease input a different ID!")
+                stdscr.addstr(f"This ID \"{temp.getID()}\" is taken!\nPlease input a different ID!\nPress any key to input again!")
+                stdscr.refresh()
+                stdscr.getch()
                 del(temp)
                 break
         try:
@@ -116,21 +134,25 @@ def inputSt(Sts):
 
 
 #Input attributes for courses
-def inputCourse(courseList):
+def inputCourse(courseList,stdscr):
     cL  = courseList
 
-    # for i in range(numCourse):
-    #     courseList.append(Course())
-    
+
     # Input number of courses
     while True:
         try:
-            print("Input number of courses: ")
-            numCourse = int(input())
+            stdscr.clear()
+            stdscr.addstr("Input number of courses: ")
+            stdscr.refresh()
+            numCourse = stdscr.getstr(2)
+            numCourse = int(numCourse)
             while numCourse<0:
-                print("Error!")
-                print("Input number of courses: ")
-                numCourse = int(input())
+                stdscr.clear()
+                stdscr.addstr("\nError!")
+                stdscr.addstr("\nInput number of courses: ")
+                stdscr.refresh()
+                numCourse = stdscr.getstr(2)
+                numCourse = int(numCourse)
             break
         except ValueError:
             pass
@@ -144,10 +166,12 @@ def inputCourse(courseList):
         if len(cL) == newNumCourse:
             break
         #Input and check if ID is dub
-        temp = Course(len(cL)+1)
+        temp = Course(len(cL)+1,stdscr)
         for i in range(len(cL)):
             if (cL[i]).__IDdub__(temp.ID):
-                print(f"This ID \"{temp.ID}\" is taken!\nPlease input a different ID!")
+                stdscr.addstr(f"This ID \"{temp.ID}\" is taken!\nPlease input a different ID!\nPress any key to input again!")
+                stdscr.refresh()
+                stdscr.getch()
                 del(temp)
                 break
         try:
@@ -161,18 +185,27 @@ def inputCourse(courseList):
     return courseList
 
 #Print any list
-def printList(dList):
+def printList(dList,stdscr):
+    stdscr.clear()
     for i in range(len(dList)):
-        print(dList[i])
+        stdscr.addstr((dList[i]).__str__())
+        stdscr.refresh()
+    stdscr.addstr("\nPress any key to return!")
+    stdscr.refresh()
+    stdscr.getch()
 
 
 #Set marks for a course
-def setMarks(courseList,stList,marked):
+def setMarks(courseList,stList,marked,stdscr):
     #Search for course
     while True:
         #Check variable
         duB = 0
-        courseM = input("Input the course ID that needs to enter marks: ")
+
+        stdscr.clear()
+        stdscr.addstr("Input the course ID that needs to enter marks: ")
+        stdscr.refresh()
+        courseM = stdscr.getstr(10).decode()
         
         #Check if the ID is corrected
         for i in range(len(courseList)):
@@ -182,11 +215,20 @@ def setMarks(courseList,stList,marked):
             else:
                 duB = 1
                 pass
+        if duB == 1:
+            stdscr.clear()
+            stdscr.addstr("Invalid course's ID!\nPress any key to try again!")
+            stdscr.refresh()
+            stdscr.getch()
 
         #Check if the course is marked
         for i in range(len(Marks.course)):
             if len(Marks.course) != 0 and courseM in Marks.course:
                 duB = 1
+                stdscr.clear()
+                stdscr.addstr("This course is marked!\nPress any key to try again!")
+                stdscr.refresh()
+                stdscr.getch()
                 break
         
         if duB == 1:
@@ -197,7 +239,11 @@ def setMarks(courseList,stList,marked):
             for x in range(len(stList)):
                 while True:
                     try:
-                        m = round(float(input(f"Input mark for student number {x+1}: ")),1)
+                        stdscr.clear()
+                        stdscr.addstr(f"Input mark for student number {x+1}: ")
+                        stdscr.refresh()
+                        m = stdscr.getstr().decode()
+                        m = round(float(m),1)
                         temp = Marks(stList[x].getID(),stList[x].getName(),m)
                         marked.append(temp)
                         break
@@ -205,27 +251,21 @@ def setMarks(courseList,stList,marked):
                         pass
             return marked
 
-def printMark(markList,numST):
+def printMark(markList,numST,stdscr):
+    stdscr.clear()
     Marks.k.clear()
     for i in range(len(markList)):
         n = i//numST
-        print(markList[i].__str__(n))
+        stdscr.addstr(markList[i].__str__(n))
+        stdscr.refresh()
+    stdscr.addstr("\nPress any key to return!")
+    stdscr.refresh()
+    stdscr.getch()
     Marks.k.clear()
-
-# def GPA(markList,numCourse,numST):
-#     GPA = []
-#     GPA.clear()
-#     for i in range(numST):
-#         GPA.append(markList[i].getMark())
-#         for x in range(numCourse-1):
-#             GPA[i] = GPA[i] + markList[i+(x+1)*numST].getMark()
-#         GPA[i] = round(GPA[i]/numCourse,1)
-#     for i in range(numST):
-#         print(f"\nID: {markList[i].getID()}\nGPA: {GPA[i]}")
 
 
 #GPA using numpy
-def GPA(markList,numCourse,numST):
+def GPA(markList,numST,stdscr):
     GPA = []
     GPA.clear()
     for i in range(len(markList)):
@@ -237,10 +277,11 @@ def GPA(markList,numCourse,numST):
     for i in range(numST):
         GPAList.append(round(np.average(GPA[i::numST]),1))
         # print(f"\nID: {markList[i].getID()}\nGPA: {np.average(GPA[i::numST])}") #Can add weights for number credits here
-    sortandPrint(markList,GPAList)
+    sortandPrint(markList,GPAList,stdscr)
 
 
-def sortandPrint(markList,GPA):
+def sortandPrint(markList,GPA,stdscr):
+    stdscr.clear()
     tempList = markList
     #Sorting
     for i in range(len(GPA)-1):
@@ -255,8 +296,11 @@ def sortandPrint(markList,GPA):
     
     #Printing
     for i in range(len(GPA)):
-        print(f"\nID: {tempList[i].getID()}\nGPA: {GPA[i]}")
-
+        stdscr.addstr(f"\nID: {tempList[i].getID()}\nGPA: {GPA[i]}")
+        stdscr.refresh()
+    stdscr.addstr("\nPress any key to return!")
+    stdscr.refresh()
+    stdscr.getch()
     #Clear cache
     try:
         del(tempList)
@@ -266,7 +310,8 @@ def sortandPrint(markList,GPA):
 
 
 
-def main():
+def main(stdscr):
+    curses.echo()
     #Init
     stList = [Student]
     courseList = [Course]
@@ -278,65 +323,83 @@ def main():
     marked.clear()
 
     #Input
-    stList = inputSt(stList)
-    # courseList = inputCourse(courseList)
-
-    # # Dung = Student()
-    # # stList.append(Dung)
-
-    # #Marking
-    # marked = setMarks(courseList,stList,marked)
-
-    # #Print
-    # printList(stList)
-    # printList(courseList)
-
-    # printMark(marked,len(stList))
+    stList = inputSt(stList,stdscr)
 
 
-    while True:
-        print("\nEnter 1 to update new students")
-        print("Enter 2 to update new courses")
-        print("Enter 3 to set marks")
-        print("Enter 4 to print student list")
-        print("Enter 5 to print course list")
-        print("Enter 6 to print marks")
-        print("Enter 7 to print GPA")
+    try:
         while True:
-            try:
-                print("Your choice: ")
-                choice = int(input())
-                while choice<1 or choice>7:
-                    print("Error!")
-                    print("Please input choice from 1 to 7: ")
-                    choice = int(input())
-                break
-            except ValueError:
-                pass
-        if choice == 1:
-            stList = inputSt(stList)
-        if choice == 2:
-            courseList = inputCourse(courseList)
-        if choice == 3:
-            if len(courseList) == len(Marks.course):
-                print("You have marked all courses !")
-            else:
-                marked = setMarks(courseList,stList,marked)
-        if choice == 4:
-            printList(stList)
-        if choice == 5:
-            printList(courseList)
-        if choice == 6:
-            if len(marked) < len(stList):
-                print("You have to update mark for new students first!")
-            else:
-                printMark(marked,len(stList))
-        if choice == 7:
-            if len(marked) < len(stList):
-                print("You have to update mark for new students first!")
-            else:
-                GPA(marked,len(courseList),len(stList))
-            
-    
-main()
+            stdscr.clear()
+            stdscr.addstr(1,10,"Enter 1 to update new students")
+            stdscr.addstr(2,10,"Enter 2 to update new courses")
+            stdscr.addstr(3,10,"Enter 3 to set marks")
+            stdscr.addstr(4,10,"Enter 4 to print student list")
+            stdscr.addstr(5,10,"Enter 5 to print course list")
+            stdscr.addstr(6,10,"Enter 6 to print marks")
+            stdscr.addstr(7,10,"Enter 7 to print GPA")
+            stdscr.refresh()
+            while True:
+                try:
+                    stdscr.addstr(8,7,"Your choice: ")
+                    choice = stdscr.getkey()
+                    choice = int(choice)
+                    while choice<1 or choice>7:
+                        stdscr.addstr("\nError!")
+                        stdscr.addstr("\nPlease input choice from 1 to 7: ")
+                        choice = stdscr.getkey()
+                        choice = int(choice)
+                    break
+                except ValueError:
+                    pass
+            if choice == 1:
+                if len(Marks.course) == 0:
+                    stList = inputSt(stList,stdscr)
+                else:
+                    stdscr.clear()
+                    stdscr.addstr("If you enter new students, you have to input marks again!\nDo you wish to continue? Y/N ")
+                    stdscr.refresh()
+                    while True:
+                        key = stdscr.getkey()
+                        if key == "y":
+                            #Clear marked courses to input again bcs of new students
+                            Marks.course.clear()
+                            marked.clear()
+                            stList = inputSt(stList,stdscr)
+                            break
+                        elif key == "n":
+                            break                
+            if choice == 2:
+                courseList = inputCourse(courseList,stdscr)
+            if choice == 3:
+                if len(courseList) == len(Marks.course):
+                    stdscr.clear()
+                    stdscr.addstr("You have marked all courses !\nPress any key to return!")
+                    stdscr.refresh()
+                    stdscr.getch()
+                else:
+                    marked = setMarks(courseList,stList,marked,stdscr)
+            if choice == 4:
+                printList(stList,stdscr)
+            if choice == 5:
+                printList(courseList,stdscr)
+            if choice == 6:
+                if len(marked) < len(stList):
+                    stdscr.clear()
+                    stdscr.addstr("You have to update mark for new students first!\nPress any key to return!")
+                    stdscr.refresh()
+                    stdscr.getch()
+                else:
+                    printMark(marked,len(stList),stdscr)
+            if choice == 7:
+                if len(marked) < len(stList):
+                    stdscr.clear()
+                    stdscr.addstr("You have to update mark for new students first!\nPress any key to return!")
+                    stdscr.refresh()
+                    stdscr.getch()
+                else:
+                    GPA(marked,len(stList),stdscr)
+    except curses.error:
+        pass #not enough space in terminal window
+
+# main()
+wrapper(main)
 
