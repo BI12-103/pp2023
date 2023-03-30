@@ -1,6 +1,7 @@
 # 12) Human Health Information Management System
 
-
+import csv
+import Model as Mod
 from tkinter import *
 import tkinter as tk
 from tkinter import messagebox
@@ -58,18 +59,24 @@ class Login:
 
 
     def openRegis(self):
-        if self.popup == False:
-            self.popup = True
-            self.Register()
-        else:
-            self.fgPassWindow.lift()
+        try:
+            if self.popup == False:
+                self.popup = True
+                self.Register()
+            elif self.fgPassWindow.winfo_exists():
+                self.fgPassWindow.lift()
+        except AttributeError:
+            self.regisWindow.lift()
 
     def openFgPass(self):
-        if self.popup == False:
-            self.popup = True
-            self.fgPass()
-        else:
-            self.regisWindow.lift()
+        try:
+            if self.popup == False:
+                self.popup = True
+                self.fgPass()
+            elif self.regisWindow.winfo_exists():
+                self.regisWindow.lift()
+        except AttributeError:
+            self.fgPassWindow.lift()
 
     def fgPass(self):
         try:
@@ -110,17 +117,29 @@ class Login:
         self.fgPassWindow.mainloop()
 
     def fgPass2(self):
-        if self.yourUserEntry.get() == "Dung":
-            self.yourUserEntry.delete(0,END)
-            self.frameP.destroy()
-            self.openfgPass2()
-        else:
+        hasName = False
+        with open("user.csv", mode='r') as csv_file:
+            reader = csv.reader(csv_file)
+            for line in reader:
+                if self.yourUsername.get() == line[0]:
+                    hasName = True
+                    if len(line[2]) != 0:
+                        self.named = self.yourUsername.get()
+                        questioned = line[2]
+                        self.answered = line[3]
+                        self.yourUserEntry.delete(0,END)
+                        self.frameP.destroy()
+                        self.openfgPass2(questioned)
+                        break
+                    else:
+                        messagebox.showerror(title="Not enough information",message="Can not reset your password due to lack of information")
+        if hasName == False:
             messagebox.showerror(title="Invalid username",message="Username not found")
 
-    def openfgPass2(self):
+    def openfgPass2(self,questioned):
         self.frameP = tk.Frame(self.fgPassWindow,bg="#333333")
         Welcome = tk.Label(self.frameP,text="Please answer this question",bg="#333333",fg="#FFFFFF",font=("Arial",18))
-        texts = tk.Label(self.frameP,text="#Question",bg="#333333",fg="#FFFFFF",font=("Arial",14))
+        texts = tk.Label(self.frameP,text=questioned,bg="#333333",fg="#FFFFFF",font=("Arial",14))
 
         self.yourAnswer = StringVar()
 
@@ -147,7 +166,7 @@ class Login:
         self.fgPass()
 
     def checkAnsFP(self):
-        if self.yourAnswer.get() == "Dung":
+        if self.yourAnswer.get() == self.answered:
             self.yourAnswerEntry.delete(0,END)
             self.frameP.destroy()
             self.resetPass()
@@ -180,8 +199,12 @@ class Login:
         pass
         
     def resetComplete(self):
-        # self.yourPassword.get()
-        self.closeFgPass()
+        if len(self.yourPassword.get())<1 or len(self.yourPassword.get())>20:
+            messagebox.showerror(title="Invalid password",message="Length of password must between 1 and 20 characters")
+        else:
+            Mod.changePassword(self.named,self.yourPassword.get())
+            self.yourPassEntry.delete(0,END)
+            self.closeFgPass()
 
     def backFgPass2(self):
         self.yourPassEntry.delete(0,END)
@@ -253,19 +276,29 @@ class Login:
 
 
     def regisCreat(self):
-        if len(self.newUserName.get()) < 4 or len(self.newUserName.get()) > 12:
-            messagebox.showerror(title="Invalid username",message="Length of username must between 4 and 12 characters")
-        elif len(self.newUserPassword.get()) < 1 or len(self.newUserName.get()) > 20:
-            messagebox.showerror(title="Invalid password",message="Length of password must between 1 and 20 characters")
-        elif self.newUserPassword.get() != self.confirmPass.get():
-            messagebox.showerror(title="Not identical",message="Passwords are not the same")
-        else:
-            self.creatAcc()
+        existName = False
+        with open("user.csv", mode='r') as csv_file:
+            reader = csv.reader(csv_file)
+            for line in reader:
+                if self.newUserName.get() == line[0]:
+                    messagebox.showerror(title="Username already exists",message="This username is taken!")
+                    existName = True
+                    break
+        if existName == False:
+            if len(self.newUserName.get()) < 4 or len(self.newUserName.get()) > 12:
+                messagebox.showerror(title="Invalid username",message="Length of username must between 4 and 12 characters")
+            elif len(self.newUserPassword.get()) < 1 or len(self.newUserName.get()) > 20:
+                messagebox.showerror(title="Invalid password",message="Length of password must between 1 and 20 characters")
+            elif self.newUserPassword.get() != self.confirmPass.get():
+                messagebox.showerror(title="Not identical",message="Passwords are not the same")
+            else:
+                self.creatAcc()
 
     def creatAcc(self):
         if len(self.Question.get()) != 0:
-            #get question and answer
-            pass
+            Mod.get_user_info(self.newUserName.get(),self.newUserPassword.get(),self.Question.get(),self.ans.get())
+        else:
+            Mod.get_user_info(self.newUserName.get(),self.newUserPassword.get(),None,None)
 
         self.newUserEntry.delete(0,END)
         self.newPassEntry.delete(0,END)
@@ -282,10 +315,16 @@ class Login:
         self.on_closing()
 
     def loginVerify(self):
-        #Login success
-        if self.usernameI.get() == "Dung" and self.passwordI.get() == "Dung":
-            self.loginSuccess()
-        else:
+        success = False
+        with open("user.csv", mode='r') as csv_file:
+            reader = csv.reader(csv_file)
+            for line in reader:
+                if self.usernameI.get() == line[0]:
+                    if self.passwordI.get() == line[1]:
+                        self.loginSuccess()
+                        success = True
+                        break
+        if success == False:
             messagebox.showerror(title="Invalid login",message="Username or password is incorrect")
 
     def loginSuccess(self):
@@ -294,5 +333,6 @@ class Login:
 
 
 if __name__ == "__main__":
+    Mod.begin()
     login = Login()
     login.Login()
