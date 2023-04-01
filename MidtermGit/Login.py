@@ -363,6 +363,7 @@ class Login:
         MenuGUI.run(username)
 
 if __name__ == "__main__":
+    Mod.beginPatient()
     Mod.begin()
     login = Login()
     login.Login()

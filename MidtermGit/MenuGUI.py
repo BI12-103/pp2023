@@ -212,7 +212,7 @@ class MenuGUI:
         if len(self.newPatientID.get())<1 or len(self.newPatientID.get())>5:
             messagebox.showerror(title="Invalid ID",message="Length of ID must be between 1 and 5 characters")
             self.addwindow.lift()
-        elif Mod.checkID:
+        elif Mod.checkID(self.newPatientID.get()):
             messagebox.showerror(title="ID is already existed",message="This ID is taken")
             self.addwindow.lift()
         elif len(self.newPatientName.get())<2 or len(self.newPatientName.get())>100:
@@ -241,4 +241,4 @@ def run(username):
     k=MenuGUI()
     k.mainFrame(username)
 
-run("Khoa")
+# run("Khoa")

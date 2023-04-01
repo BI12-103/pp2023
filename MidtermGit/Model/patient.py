@@ -106,8 +106,10 @@ class PatientDatabase:
                     patient = Patient(id, name, address, age, condition,creator)
                     self.add_patient(patient)
         except FileNotFoundError:
-            f = open("patients.csv","w")
-            f.close()
+            with open("patients.csv", mode='w', newline='') as csv_file:
+                fieldnames = ['ID', 'Name', 'Address', 'Age', 'Condition','Creator']
+                writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+                writer.writeheader()
 
     def print_patients_from_csv(self):
         with open("patients.csv", mode='r') as csv_file:
@@ -129,12 +131,9 @@ class PatientDatabase:
         return False
 
 # Example Usage
-def test():
+def beginPatient():
     db = PatientDatabase()
     db.load_from_csv()
-    patient1 = Patient(1, "Khoa", "Bac", 21, "COVID-18","Dung")
-    db.add_patient(patient1)
-    db.save_to_csv()
 
 def addPatient(id, name, address, age, condition,creator):
     db = PatientDatabase()
