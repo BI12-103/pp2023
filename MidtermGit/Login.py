@@ -6,7 +6,7 @@ from tkinter import *
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
-import MenuGUI
+import MainGUI
 
 class Login:
     def Login(self):
@@ -360,10 +360,4 @@ class Login:
     #Go to GUI window
     def loginSuccess(self,username):
         self.loginWindow.destroy()
-        MenuGUI.run(username)
-
-if __name__ == "__main__":
-    Mod.initPatient()
-    Mod.initUser()
-    login = Login()
-    login.Login()
+        MainGUI.run(username)

@@ -6,3 +6,6 @@ from Model.patient import checkID
 from Model.patient import initPatient
 from Model.patient import modify
 from Model.patient import removeAPatient
+from Model.patient import IDFind
+from Model.patient import sort
+from Model.patient import undo

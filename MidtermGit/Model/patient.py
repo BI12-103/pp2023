@@ -39,6 +39,7 @@ class Patient:
 class PatientDatabase:
     patient_list = [Patient]
     patient_list.clear()
+    undoTemp = [Patient]
 
     def add_patient(self, patient):
         self.patient_list.append(patient)
@@ -117,7 +118,29 @@ class PatientDatabase:
                 return True
         return False
 
-# Example Usage
+    def sortByAge(self):
+        for x in range(len(self.patient_list)-1):
+            for i in range(len(self.patient_list)-1):
+                if self.patient_list[i].get_age() < self.patient_list[i+1].get_age():
+                    self.patient_list[i],self.patient_list[i+1] = swap(self.patient_list[i],self.patient_list[i+1])
+
+
+
+def undo():
+    db = PatientDatabase()
+    try:
+        if db.idDub(db.undoTemp[0].get_id()):
+            return True
+        db.add_patient(db.undoTemp[0])
+        db.saveNewPatient(db.undoTemp[0])
+    except TypeError:
+        print("Error")
+        return True
+
+
+def swap(a,b):
+    return b,a
+
 def initPatient():
     db = PatientDatabase()
     db.load_from_csv()
@@ -140,6 +163,17 @@ def modify(id,new_name,new_address,new_age,new_condition,creator):
 def removeAPatient(id):
     db = PatientDatabase()
     remvPat = db.find_patient_by_id(id)
+    db.undoTemp.clear()
+    db.undoTemp.append(remvPat)
     db.remove_patient(remvPat)
     db.save_to_csv()
 
+def IDFind(id):
+    db = PatientDatabase()
+    searched = db.find_patient_by_id(id)
+    return searched.get_name(),searched.get_address(),searched.get_age(),searched.get_condition(),searched.get_creator()
+
+def sort():
+    db = PatientDatabase()
+    db.sortByAge()
+    db.save_to_csv()
