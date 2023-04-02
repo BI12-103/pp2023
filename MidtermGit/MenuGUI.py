@@ -103,16 +103,16 @@ class MenuGUI:
         #Button frame
         buttonFrame = tk.Frame(self.mainWindow,bg="#EAE0DA")
 
-        newBut = tk.Button(buttonFrame,text="New",font=("Arial",12),command=self.newPatient,anchor=CENTER,width=15,height=2,borderwidth=5)
+        newBut = tk.Button(buttonFrame,text="New",font=("Arial",12),command=self.openAdd,anchor=CENTER,width=15,height=2,borderwidth=5)
         newBut.grid(column=0,row=0)
 
         f5But = tk.Button(buttonFrame,text="Refresh",font=("Arial",12),command=self.refresh,anchor=CENTER,width=15,height=2,borderwidth=5)
         f5But.grid(column=0,row=1,pady=5)
 
-        modifyBut = tk.Button(buttonFrame,text="Modify",font=("Arial",12),command=NONE,width=15,height=2,anchor=CENTER,borderwidth=5)
+        modifyBut = tk.Button(buttonFrame,text="Modify",font=("Arial",12),command=self.openModify,width=15,height=2,anchor=CENTER,borderwidth=5)
         modifyBut.grid(column=0,row=2)
 
-        delBut = tk.Button(buttonFrame,text="Delete",font=("Arial",12),command=NONE ,width=15,height=2,anchor=CENTER,borderwidth=5)
+        delBut = tk.Button(buttonFrame,text="Delete",font=("Arial",12),command=self.deleteData ,width=15,height=2,anchor=CENTER,borderwidth=5)
         delBut.grid(column=0,row=3,pady=5)
 
         exitBut = tk.Button(buttonFrame,text="Exit",font=("Arial",12),command=self.on_closing,width=15,height=2,anchor=CENTER,borderwidth=5)
@@ -121,6 +121,27 @@ class MenuGUI:
         buttonFrame.grid(row=0,column=2,sticky=tk.E,padx=10)
 
         self.mainWindow.mainloop()
+
+    #Open modify condition
+    def openModify(self):
+        try:
+            if self.popup == False:
+                self.popup = True
+                self.modify()
+            elif self.addwindow.winfo_exists():
+                self.addwindow.lift()
+        except AttributeError:
+            self.modifyWindow.lift()
+
+    def openAdd(self):
+        try:
+            if self.popup == False:
+                self.popup = True
+                self.newPatient()
+            elif self.modifyWindow.winfo_exists():
+                self.modifyWindow.lift()
+        except AttributeError:
+            self.addwindow.lift()
 
     #Exit
     def on_closing(self):
@@ -152,17 +173,14 @@ class MenuGUI:
         self.addwindow.configure(bg="#EAE0DA")
         self.addwindow.resizable(FALSE,FALSE)
 
-        # self.addwindow.columnconfigure(1,weight=2)
-
         self.newPatientID = StringVar()
         self.newPatientName = StringVar()
         self.newPatientAddress = StringVar()
         self.newPatientAge = IntVar()
         self.newPatientCondition = StringVar()
-        # self.newPatientCreator = self
 
-        Welcome = tk.Label(self.addwindow,text="Add new patient",bg="#EAE0DA",font=("Arial",20))
-        Welcome.grid(column=0,row=0,columnspan=4,sticky="news",pady=10)
+        Welcome = tk.Label(self.addwindow,text="Add new patient",bg="#EAE0DA",font=("Arial",20,"bold"))
+        Welcome.grid(column=0,row=0,columnspan=10,sticky="news",pady=10)
 
         id = tk.Label(self.addwindow,text="ID",bg="#EAE0DA",font=("Arial",14))
         id.grid(column=0,row=1,padx=40,sticky=tk.W)
@@ -203,42 +221,197 @@ class MenuGUI:
         cancelBut = tk.Button(self.addwindow,text="Cancel",font=("Arial",12),command=self.cancelAdd,width=10,borderwidth=4)
         cancelBut.grid(column=0,row=8,columnspan=7,pady=10)
 
+        self.addwindow.protocol("WM_DELETE_WINDOW",self.cancelAdd)
         self.addwindow.mainloop()
 
     def cancelAdd(self):
+        self.popup = False
         self.addwindow.destroy()
 
     def add(self):
-        if len(self.newPatientID.get())<1 or len(self.newPatientID.get())>5:
-            messagebox.showerror(title="Invalid ID",message="Length of ID must be between 1 and 5 characters")
+        try:
+            if len(self.newPatientID.get())<1 or len(self.newPatientID.get())>5:
+                messagebox.showerror(title="Invalid ID",message="Length of ID must be between 1 and 5 characters")
+                self.addwindow.lift()
+            elif Mod.checkID(self.newPatientID.get()):
+                messagebox.showerror(title="ID is already existed",message="This ID is taken")
+                self.addwindow.lift()
+            elif len(self.newPatientName.get())<2 or len(self.newPatientName.get())>100:
+                messagebox.showerror(title="Invalid name",message="Length of name must be between 2 and 100 characters")
+                self.addwindow.lift()
+            elif len(self.newPatientAddress.get())>255:
+                messagebox.showerror(title="Invalid address",message="Length of address must be less than 255 characters")
+                self.addwindow.lift()
+            elif len(self.newPatientCondition.get())<2 or len(self.newPatientCondition.get())>255:
+                messagebox.showerror(title="Invalid condition",message="Length of condition must be between 2 and 255 characters")
+                self.addwindow.lift()
+            elif self.newPatientAge.get()<0 or self.newPatientAge.get()>255:
+                messagebox.showerror(title="Invalid age",message="Age must be between 0 and 255")
+                self.addwindow.lift()
+            else:
+                Mod.addPatient(self.newPatientID.get(),self.newPatientName.get(),self.newPatientAddress.get(),
+                            self.newPatientAge.get(),self.newPatientCondition.get(),self.user)
+                self.idEntry.delete(0,END)
+                self.nameEntry.delete(0,END)
+                self.addressEntry.delete(0,END)
+                self.conditionEntry.delete(0,END)
+                self.ageEntry.delete(0,END)
+                self.refresh()
+        except tk.TclError:
+            messagebox.showerror(title="Invalid age",message="Age must be an interger")
             self.addwindow.lift()
-        elif Mod.checkID(self.newPatientID.get()):
-            messagebox.showerror(title="ID is already existed",message="This ID is taken")
+
+    def modify(self):
+        try:
+            #Check first
+            selectedItem = self.tv.selection()
+            self.modifyPatientID = self.tv.item(selectedItem)['values'][0]
+            
+            #Create window if check ok
+            self.modifyWindow = tk.Toplevel(self.mainWindow)
+            self.modifyWindow.title("Modify")
+            self.modifyWindow.geometry("760x600")
+            self.modifyWindow.configure(bg="#EAE0DA")
+            self.modifyWindow.resizable(FALSE,FALSE)
+            
+            self.modifyPatientName = StringVar()
+            self.modifyPatientAddress = StringVar()
+            self.modifyPatientAge = IntVar()
+            self.modifyPatientCondition = StringVar()
+
+            #Welcome
+            Welcome = tk.Label(self.modifyWindow,text="Current",bg="#EAE0DA",font=("Arial",20,"bold"))
+            Welcome.grid(column=0,row=0,columnspan=5,sticky="news",pady=10,ipadx=50)
+
+            #Old data
+            id = tk.Label(self.modifyWindow,text="ID",bg="#EAE0DA",font=("Arial",14))
+            id.grid(column=0,row=1,padx=40,sticky=tk.W)
+            idEntry = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][0],bg="#EAE0DA",font=("Arial",14))
+            idEntry.grid(column=1,row=1,sticky=tk.W)
+
+            age = tk.Label(self.modifyWindow,text="Age",bg="#EAE0DA",font=("Arial",14))
+            age.grid(column=3,row=1,padx=40,sticky=tk.W)
+            ageEntry = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][3],bg="#EAE0DA",font=("Arial",14))
+            ageEntry.grid(column=4,row=1,sticky=tk.W)
+
+            name = tk.Label(self.modifyWindow,text="Name",bg="#EAE0DA",font=("Arial",14))
+            name.grid(column=0,row=2,sticky=tk.W,padx=40,columnspan=2)
+            nameEntry = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][1],bg="#EAE0DA",font=("Arial",14))
+            nameEntry.grid(column=1,row=2,sticky=tk.W,columnspan=4)
+
+            address = tk.Label(self.modifyWindow,text="Address",bg="#EAE0DA",font=("Arial",14))
+            address.grid(column=0,row=3,columnspan=2,sticky=tk.W,padx=40)
+            addressEntry = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][2],bg="#EAE0DA",font=("Arial",14))
+            addressEntry.grid(column=1,row=3,columnspan=4,sticky=tk.W)
+
+            condition = tk.Label(self.modifyWindow,text="Condition",bg="#EAE0DA",font=("Arial",14))
+            condition.grid(column=0,row=4,columnspan=2,sticky=tk.W,padx=40)
+            conditionEntry = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][4],bg="#EAE0DA",font=("Arial",14))
+            conditionEntry.grid(column=1,row=4,columnspan=4,sticky=tk.W)
+
+            creator = tk.Label(self.modifyWindow,text="Creator",bg="#EAE0DA",font=("Arial",14))
+            creator.grid(column=0,row=5,sticky=tk.W,padx=40)
+            creatorName = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][5],bg="#EAE0DA",font=("Arial",14))
+            creatorName.grid(column=1,row=5,sticky=tk.W)
+            
+            space=tk.Label(self.modifyWindow,text="",bg="#EAE0DA")
+            space.grid(column=0,row=6,pady=10)
+
+            #New data
+            Welcome2 = tk.Label(self.modifyWindow,text="Update",bg="#EAE0DA",font=("Arial",20,"bold"))
+            Welcome2.grid(column=0,row=7,columnspan=5,sticky="news",pady=10,ipadx=50)
+
+            id2 = tk.Label(self.modifyWindow,text="ID",bg="#EAE0DA",font=("Arial",14))
+            id2.grid(column=0,row=8,padx=40,sticky=tk.W)
+            self.idEntry2 = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][0],bg="#EAE0DA",font=("Arial",14))
+            self.idEntry2.grid(column=1,row=8,sticky=tk.W)
+
+            age2 = tk.Label(self.modifyWindow,text="Age",bg="#EAE0DA",font=("Arial",14))
+            age2.grid(column=3,row=8,padx=40,sticky=tk.W)
+            self.ageEntry2 = tk.Entry(self.modifyWindow,width=5,font=("Arial",14),textvariable=self.modifyPatientAge)
+            self.ageEntry2.grid(column=4,row=8,sticky=tk.W)
+
+            name2 = tk.Label(self.modifyWindow,text="Name",bg="#EAE0DA",font=("Arial",14))
+            name2.grid(column=0,row=9,sticky=tk.W,padx=40,columnspan=2)
+            self.nameEntry2 = tk.Entry(self.modifyWindow,width=50,font=("Arial",14),textvariable=self.modifyPatientName)
+            self.nameEntry2.grid(column=1,row=9,sticky=tk.W,columnspan=4)
+
+            address2 = tk.Label(self.modifyWindow,text="Address",bg="#EAE0DA",font=("Arial",14))
+            address2.grid(column=0,row=10,columnspan=2,sticky=tk.W,padx=40)
+            self.addressEntry2 = tk.Entry(self.modifyWindow,width=50,font=("Arial",14),textvariable=self.modifyPatientAddress)
+            self.addressEntry2.grid(column=1,row=10,columnspan=4,sticky=tk.W)
+
+            condition2 = tk.Label(self.modifyWindow,text="Condition",bg="#EAE0DA",font=("Arial",14))
+            condition2.grid(column=0,row=11,columnspan=2,sticky=tk.W,padx=40)
+            self.conditionEntry2 = tk.Entry(self.modifyWindow,width=50,font=("Arial",14),textvariable=self.modifyPatientCondition)
+            self.conditionEntry2.grid(column=1,row=11,columnspan=4,sticky=tk.W)
+
+            creator2 = tk.Label(self.modifyWindow,text="Creator",bg="#EAE0DA",font=("Arial",14))
+            creator2.grid(column=0,row=12,sticky=tk.W,padx=40)
+            creatorName2 = tk.Label(self.modifyWindow,text=self.user,bg="#EAE0DA",fg="#913175",font=("Arial",14,"bold"))
+            creatorName2.grid(column=1,row=12,sticky=tk.W)
+
+            space=tk.Label(self.modifyWindow,text="",bg="#EAE0DA")
+            space.grid(column=0,row=13,pady=10)
+
+            #Button
+            updateBut = tk.Button(self.modifyWindow,text="Update",font=("Arial",12),command=self.update,width=10,borderwidth=4)
+            updateBut.grid(column=1,row=14,sticky="news")
+            cancelBut = tk.Button(self.modifyWindow,text="Cancel",font=("Arial",12),command=self.cancelModify,width=10,borderwidth=4)
+            cancelBut.grid(column=3,row=14,sticky="news")
+            
+            self.modifyWindow.protocol("WM_DELETE_WINDOW",self.cancelModify)
+            self.modifyWindow.mainloop()
+        except IndexError:
+            self.popup = False
+            messagebox.showerror(title="Error",message="Please select a patient's data to modify")
+
+    def update(self):
+        try:
+            if len(self.modifyPatientName.get())<2 or len(self.modifyPatientName.get())>100:
+                messagebox.showerror(title="Invalid name",message="Length of name must be between 2 and 100 characters")
+                self.modifyWindow.lift()
+            elif len(self.modifyPatientAddress.get())>255:
+                messagebox.showerror(title="Invalid address",message="Length of address must be less than 255 characters")
+                self.modifyWindow.lift()
+            elif len(self.modifyPatientCondition.get())<2 or len(self.modifyPatientCondition.get())>255:
+                messagebox.showerror(title="Invalid condition",message="Length of condition must be between 2 and 255 characters")
+                self.modifyWindow.lift()
+            elif self.modifyPatientAge.get()<0 or self.modifyPatientAge.get()>255:
+                messagebox.showerror(title="Invalid age",message="Age must be between 0 and 255")
+                self.modifyWindow.lift()
+            else:
+                Mod.modify(self.modifyPatientID,self.modifyPatientName.get(),self.modifyPatientAddress.get(),
+                            self.modifyPatientAge.get(),self.modifyPatientCondition.get(),self.user)
+                self.nameEntry2.delete(0,END)
+                self.addressEntry2.delete(0,END)
+                self.conditionEntry2.delete(0,END)
+                self.ageEntry2.delete(0,END)
+                self.refresh()
+        except tk.TclError:
+            messagebox.showerror(title="Invalid age",message="Age must be an interger")
             self.addwindow.lift()
-        elif len(self.newPatientName.get())<2 or len(self.newPatientName.get())>100:
-            messagebox.showerror(title="Invalid name",message="Length of name must be between 2 and 100 characters")
-            self.addwindow.lift()
-        elif len(self.newPatientAddress.get())>255:
-            messagebox.showerror(title="Invalid address",message="Length of address must be less than 255 characters")
-            self.addwindow.lift()
-        elif len(self.newPatientCondition.get())<2 or len(self.newPatientCondition.get())>255:
-            messagebox.showerror(title="Invalid condition",message="Length of condition must be between 2 and 255 characters")
-            self.addwindow.lift()
-        elif self.newPatientAge.get()<0 or self.newPatientAge.get()>255:
-            messagebox.showerror(title="Invalid age",message="Age must be between 0 and 255")
-            self.addwindow.lift()
-        else:
-            Mod.addPatient(self.newPatientID.get(),self.newPatientName.get(),self.newPatientAddress.get(),
-                           self.newPatientAge.get(),self.newPatientCondition.get(),self.user)
-            self.idEntry.delete(0,END)
-            self.nameEntry.delete(0,END)
-            self.addressEntry.delete(0,END)
-            self.conditionEntry.delete(0,END)
-            self.ageEntry.delete(0,END)
+
+    def cancelModify(self):
+        self.popup = False
+        self.modifyWindow.destroy()
+
+    def deleteData(self):
+        if self.popup == False:
+            try:
+                #Check first
+                selectedItem = self.tv.selection()
+                deletePatientID = self.tv.item(selectedItem)['values'][0]
+
+                #Delete item selected
+                Mod.removeAPatient(deletePatientID)
+                self.refresh()
+            except IndexError:
+                messagebox.showerror(title="Error",message="Please select a patient's data to remove")
 
 
 def run(username):
     k=MenuGUI()
     k.mainFrame(username)
 
-# run("Khoa")
+# run("Trung")

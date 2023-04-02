@@ -85,7 +85,7 @@ def get_user_info(uN,pW,qT,aW):
     user = User(uN,pW,qT,aW)
     data.addAndSave(user)
 
-def begin():
+def initUser():
     load = UserDatabase()
     UserDatabase.userList.clear()
     load.load_from_csv()

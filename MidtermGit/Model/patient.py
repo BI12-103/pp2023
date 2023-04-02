@@ -46,9 +46,6 @@ class PatientDatabase:
     def remove_patient(self, patient):
         if patient in self.patient_list:
             self.patient_list.remove(patient)
-            print("Patient removed successfully")
-        else:
-            print("Patient not found")
 
     def update_patient(self, id, new_name, new_address, new_age, new_condition,creator):
         for patient in self.patient_list:
@@ -58,31 +55,21 @@ class PatientDatabase:
                 patient.set_age(new_age)
                 patient.set_condition(new_condition)
                 patient.set_creator(creator)
-                print("Patient updated successfully")
-                return
-        print("Patient not found")
 
     def find_patient_by_id(self, id):
         for patient in self.patient_list:
             if patient.get_id() == id:
-                print("Patient found:")
-                print("ID:", patient.get_id())
-                print("Name:", patient.get_name())
-                print("Address:", patient.get_address())
-                print("Age:", patient.get_age())
-                print("Condition:", patient.get_condition())
-                return
-        print("Patient not found")
+                return patient
 
-    def find_patients_by_symptoms(self, symptoms):
-        print("Patients with symptoms:")
-        for patient in self.patient_list:
-            if symptoms in patient.get_condition():
-                print("ID:", patient.get_id())
-                print("Name:", patient.get_name())
-                print("Address:", patient.get_address())
-                print("Age:", patient.get_age())
-                print("Condition:", patient.get_condition())
+    # def find_patients_by_symptoms(self, symptoms):
+    #     print("Patients with symptoms:")
+    #     for patient in self.patient_list:
+    #         if symptoms in patient.get_condition():
+    #             print("ID:", patient.get_id())
+    #             print("Name:", patient.get_name())
+    #             print("Address:", patient.get_address())
+    #             print("Age:", patient.get_age())
+    #             print("Condition:", patient.get_condition())
 
     def save_to_csv(self):
         with open("patients.csv", mode='w', newline='') as csv_file:
@@ -111,11 +98,11 @@ class PatientDatabase:
                 writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
                 writer.writeheader()
 
-    def print_patients_from_csv(self):
-        with open("patients.csv", mode='r') as csv_file:
-            reader = csv.reader(csv_file)
-            for row in reader:
-                print(row)
+    # def print_patients_from_csv(self):
+    #     with open("patients.csv", mode='r') as csv_file:
+    #         reader = csv.reader(csv_file)
+    #         for row in reader:
+    #             print(row)
 
     def saveNewPatient(self,patient):
         with open("patients.csv", mode='a', newline='') as csv_file:
@@ -131,7 +118,7 @@ class PatientDatabase:
         return False
 
 # Example Usage
-def beginPatient():
+def initPatient():
     db = PatientDatabase()
     db.load_from_csv()
 
@@ -144,3 +131,15 @@ def addPatient(id, name, address, age, condition,creator):
 def checkID(id):
     db = PatientDatabase()
     return db.idDub(id)
+
+def modify(id,new_name,new_address,new_age,new_condition,creator):
+    db = PatientDatabase()
+    db.update_patient(id,new_name,new_address,new_age,new_condition,creator)
+    db.save_to_csv()
+
+def removeAPatient(id):
+    db = PatientDatabase()
+    remvPat = db.find_patient_by_id(id)
+    db.remove_patient(remvPat)
+    db.save_to_csv()
+
