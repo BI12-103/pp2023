@@ -1,5 +1,3 @@
-# 12) Human Health Information Management System
-
 import csv
 import Model as Mod
 from tkinter import *

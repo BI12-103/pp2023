@@ -1,4 +1,5 @@
 import csv
+import threading
 
 class Patient:
     def __init__(self, id, name, address, age, condition,creator,advice):
@@ -167,7 +168,7 @@ def checkID(id):
 def modify(id,new_name,new_address,new_age,new_condition,creator,advice):
     db = PatientDatabase()
     db.update_patient(id,new_name,new_address,new_age,new_condition,creator,advice)
-    db.save_to_csv()
+    threading.Thread(target=db.save_to_csv).start()
 
 def removeAPatient(id):
     db = PatientDatabase()
@@ -175,7 +176,7 @@ def removeAPatient(id):
     db.undoTemp.clear()
     db.undoTemp.append(remvPat)
     db.remove_patient(remvPat)
-    db.save_to_csv()
+    threading.Thread(target=db.save_to_csv).start()
 
 def IDFind(id):
     db = PatientDatabase()
@@ -190,7 +191,7 @@ def IDFindFull(id):
 def sort():
     db = PatientDatabase()
     db.sortByAge()
-    db.save_to_csv()
+    threading.Thread(target=db.save_to_csv).start()
 
 def displayData(patient):
     db = PatientDatabase()

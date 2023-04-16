@@ -104,3 +104,11 @@ def changePassword(username,password):
     search = UserDatabase()
     search.changePass(username,password)
     search.saveall_to_csv()
+
+def checkPassword(username,password):
+    k = UserDatabase()
+    search = k.searchUser(username)
+    if search.get_password() == password:
+        return True
+    else:
+        return False

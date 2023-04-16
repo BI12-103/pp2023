@@ -1,4 +1,3 @@
-import csv
 from tkinter import *
 import tkinter as tk
 from tkinter import messagebox
@@ -249,13 +248,7 @@ class MenuGUI:
             self.changePassVerify()
 
     def isPassCorrect(self,password):
-        with open("user.csv", mode='r') as csv_file:
-            reader = csv.reader(csv_file)
-            for line in reader:
-                if self.user == line[0]:
-                    if password == line[1]:
-                        return True
-        return False
+        return Mod.checkPassword(self.user,password)
 
     def changePassVerify(self):
         passCorrect = False
@@ -712,5 +705,3 @@ class MenuGUI:
 def run(username):
     k=MenuGUI()
     k.mainFrame(username)
-
-# run("Trung")
