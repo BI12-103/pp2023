@@ -7,26 +7,28 @@ import MainGUI
 import Controller as Ctrl
 
 class Login:
+    BG_COLOR = "#333333"
+    FG_COLOR = "#FFFFFF"
     def Login(self):
         #Main login window
         self.loginWindow = tk.Tk()
         self.loginWindow.title("Human Health Information Management System")
         self.loginWindow.geometry("340x440")
-        self.loginWindow.configure(bg="#333333")
+        self.loginWindow.configure(bg=self.BG_COLOR)
         
         #Limit top level window
         self.popup = False
 
-        frame = tk.Frame(self.loginWindow,bg="#333333")
+        frame = tk.Frame(self.loginWindow,bg=self.BG_COLOR)
 
         #Input value
         self.usernameI = StringVar()
         self.passwordI = StringVar()
 
         #Labels
-        Welcome = tk.Label(frame,text="WELCOME!",bg="#333333",fg="#FFFFFF",font=("Arial",20))
-        Username = tk.Label(frame,text="Username:",bg="#333333",fg="#FFFFFF",font=("Arial",14))
-        Password = tk.Label(frame,text="Password:",bg="#333333",fg="#FFFFFF",font=("Arial",14))
+        Welcome = tk.Label(frame,text="WELCOME!",bg=self.BG_COLOR,fg=self.FG_COLOR,font=("Arial",20))
+        Username = tk.Label(frame,text="Username:",bg=self.BG_COLOR,fg=self.FG_COLOR,font=("Arial",14))
+        Password = tk.Label(frame,text="Password:",bg=self.BG_COLOR,fg=self.FG_COLOR,font=("Arial",14))
 
         Welcome.grid(column=0,row=0,columnspan=2,sticky="news",pady=10)
         Username.grid(column=0,row=1)
@@ -43,7 +45,7 @@ class Login:
         logBut = tk.Button(frame,text="Login",font=("Arial",12),command=self.loginVerify)
         logBut.grid(column=0,row=4,columnspan=2,pady=20)
 
-        fgPassBut = tk.Button(frame,text="Forgot password?",font=("Arial",10,"italic"),command=self.openFgPass ,width=15,bg="#333333",fg="#BBD6B8")
+        fgPassBut = tk.Button(frame,text="Forgot password?",font=("Arial",10,"italic"),command=self.openFgPass ,width=15,bg=self.BG_COLOR,fg="#BBD6B8")
         fgPassBut.grid(column=0,row=3,columnspan=2,sticky=tk.E)
 
         regisBut = tk.Button(frame,text="Register",font=("Arial",12),command=self.openRegis,width=20)
@@ -52,7 +54,7 @@ class Login:
         backBut = tk.Button(frame,text="Back",font=("Arial",12),command=self.backPressed,width=20)
         backBut.grid(column=0,row=7,columnspan=2,pady=10)
 
-        space = tk.Label(frame,text="",bg="#333333")
+        space = tk.Label(frame,text="",bg=self.BG_COLOR)
         space.grid(column=0,row=5,sticky="news",pady=30)
 
 
@@ -95,21 +97,21 @@ class Login:
                 self.fgPassWindow = tk.Toplevel(self.loginWindow)
                 self.fgPassWindow.title("Forgotten password")
                 self.fgPassWindow.geometry("340x340")
-                self.fgPassWindow.configure(bg="#333333")
+                self.fgPassWindow.configure(bg=self.BG_COLOR)
         except AttributeError:
             self.fgPassWindow = tk.Toplevel(self.loginWindow)
             self.fgPassWindow.title("Forgotten password")
             self.fgPassWindow.geometry("340x340")
-            self.fgPassWindow.configure(bg="#333333")
+            self.fgPassWindow.configure(bg=self.BG_COLOR)
         
-        self.frameP = tk.Frame(self.fgPassWindow,bg="#333333")
+        self.frameP = tk.Frame(self.fgPassWindow,bg=self.BG_COLOR)
 
         #This variable is important !!!
         self.yourUsername = StringVar()
 
         #Label
-        Welcome = tk.Label(self.frameP,text="Find your account",bg="#333333",fg="#FFFFFF",font=("Arial",20))
-        texts = tk.Label(self.frameP,text="Please enter your username",bg="#333333",fg="#FFFFFF",font=("Arial",14))
+        Welcome = tk.Label(self.frameP,text="Find your account",bg=self.BG_COLOR,fg=self.FG_COLOR,font=("Arial",20))
+        texts = tk.Label(self.frameP,text="Please enter your username",bg=self.BG_COLOR,fg=self.FG_COLOR,font=("Arial",14))
 
         Welcome.grid(column=0,row=0,columnspan=2,sticky="news",pady=10)
         texts.grid(column=0,row=1,columnspan=2)
@@ -146,11 +148,11 @@ class Login:
 
     #Open forgot pass 2 window
     def openfgPass2(self,questioned):
-        self.frameP = tk.Frame(self.fgPassWindow,bg="#333333")
+        self.frameP = tk.Frame(self.fgPassWindow,bg=self.BG_COLOR)
 
         #Labels
-        Welcome = tk.Label(self.frameP,text="Please answer this question",bg="#333333",fg="#FFFFFF",font=("Arial",18))
-        texts = tk.Label(self.frameP,text=questioned,bg="#333333",fg="#FFFFFF",font=("Arial",14))
+        Welcome = tk.Label(self.frameP,text="Please answer this question",bg=self.BG_COLOR,fg=self.FG_COLOR,font=("Arial",18))
+        texts = tk.Label(self.frameP,text=questioned,bg=self.BG_COLOR,fg=self.FG_COLOR,font=("Arial",14))
         Welcome.grid(column=0,row=0,columnspan=2,sticky="news",pady=10)
         texts.grid(column=0,row=1,columnspan=2)
 
@@ -189,11 +191,11 @@ class Login:
 
     #Reset password
     def resetPass(self):
-        self.frameP = tk.Frame(self.fgPassWindow,bg="#333333")
+        self.frameP = tk.Frame(self.fgPassWindow,bg=self.BG_COLOR)
 
         #Labels
-        Welcome = tk.Label(self.frameP,text="Reset password",bg="#333333",fg="#FFFFFF",font=("Arial",18))
-        texts = tk.Label(self.frameP,text="Please enter your new password",bg="#333333",fg="#FFFFFF",font=("Arial",14))
+        Welcome = tk.Label(self.frameP,text="Reset password",bg=self.BG_COLOR,fg=self.FG_COLOR,font=("Arial",18))
+        texts = tk.Label(self.frameP,text="Please enter your new password",bg=self.BG_COLOR,fg=self.FG_COLOR,font=("Arial",14))
         Welcome.grid(column=0,row=0,columnspan=2,sticky="news",pady=10)
         texts.grid(column=0,row=1,columnspan=2)
 
@@ -246,24 +248,24 @@ class Login:
         self.regisWindow = tk.Toplevel(self.loginWindow)
         self.regisWindow.title("Register")
         self.regisWindow.geometry("340x340")
-        self.regisWindow.configure(bg="#333333")
+        self.regisWindow.configure(bg=self.BG_COLOR)
 
-        frame = tk.Frame(self.regisWindow,bg="#333333")
+        frame = tk.Frame(self.regisWindow,bg=self.BG_COLOR)
 
         self.newUserName = StringVar()
         self.newUserPassword = StringVar()
         self.confirmPass = StringVar()
         self.ans = StringVar()
 
-        Welcome = tk.Label(frame,text="Create your account",bg="#333333",fg="#FFFFFF",font=("Arial",20))
-        newUsername = tk.Label(frame,text="Username:",bg="#333333",fg="#FFFFFF",font=("Arial",14))
-        newPassword = tk.Label(frame,text="Password:",bg="#333333",fg="#FFFFFF",font=("Arial",14))
-        Confirm = tk.Label(frame,text="Confirm:",bg="#333333",fg="#FFFFFF",font=("Arial",14))
-        quesLabel = tk.Label(frame,text="Question:",bg="#333333",fg="#FFFFFF",font=("Arial",14))
+        Welcome = tk.Label(frame,text="Create your account",bg=self.BG_COLOR,fg=self.FG_COLOR,font=("Arial",20))
+        newUsername = tk.Label(frame,text="Username:",bg=self.BG_COLOR,fg=self.FG_COLOR,font=("Arial",14))
+        newPassword = tk.Label(frame,text="Password:",bg=self.BG_COLOR,fg=self.FG_COLOR,font=("Arial",14))
+        Confirm = tk.Label(frame,text="Confirm:",bg=self.BG_COLOR,fg=self.FG_COLOR,font=("Arial",14))
+        quesLabel = tk.Label(frame,text="Question:",bg=self.BG_COLOR,fg=self.FG_COLOR,font=("Arial",14))
         self.Question = ttk.Combobox(frame,values=["","What is your pet's name?","What is your birthday?",
                                                    "What is your best friend's name?"],width=33)
         self.Question.current(0)
-        ansLabel = tk.Label(frame,text="Answer:",bg="#333333",fg="#FFFFFF",font=("Arial",14))
+        ansLabel = tk.Label(frame,text="Answer:",bg=self.BG_COLOR,fg=self.FG_COLOR,font=("Arial",14))
         self.answerEntry = tk.Entry(frame,width=20,font=("Arial",14),textvariable=self.ans)
 
         Welcome.grid(column=0,row=0,columnspan=2,sticky="news",pady=10)

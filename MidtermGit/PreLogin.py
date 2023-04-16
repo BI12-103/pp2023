@@ -4,18 +4,19 @@ from tkinter import messagebox
 import Controller as Ctrl
 
 class PreLogin:
+    BG_COLOR = "#333333"
     def mainFrame(self):
         #Init main window
         self.preLoginWindow = tk.Tk()
         self.preLoginWindow.title("Human Health Information Management System")
         self.preLoginWindow.geometry("340x220")
         self.preLoginWindow.resizable(FALSE,FALSE)
-        self.preLoginWindow.configure(bg="#333333")
+        self.preLoginWindow.configure(bg=self.BG_COLOR)
 
         #Frame to center everything
-        mainFrame = tk.Frame(self.preLoginWindow,bg="#333333")
+        mainFrame = tk.Frame(self.preLoginWindow,bg=self.BG_COLOR)
 
-        title = tk.Label(mainFrame,text="YOU ARE",bg="#333333",fg="#FFFFFF",font=("Franklin Gothic Heavy",25))
+        title = tk.Label(mainFrame,text="YOU ARE",bg=self.BG_COLOR,fg="#FFFFFF",font=("Franklin Gothic Heavy",25))
         title.grid(column=0,row=0,pady=5)
 
         #Button

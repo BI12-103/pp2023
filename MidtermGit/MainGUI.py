@@ -8,6 +8,7 @@ import Controller as Ctrl
 
 
 class MenuGUI:
+    BG_COLOR = "#EAE0DA"
     def mainFrame(self,username):
         #Creator name
         self.user = username
@@ -16,7 +17,7 @@ class MenuGUI:
         self.mainWindow = tk.Tk()
         self.mainWindow.title("Human Health Information Management System")
         self.mainWindow.attributes("-fullscreen",True)
-        self.mainWindow.configure(bg="#EAE0DA")
+        self.mainWindow.configure(bg=self.BG_COLOR)
         self.mainWindow.columnconfigure(0,weight=1)
         self.mainWindow.columnconfigure(2,weight=0)
         
@@ -61,9 +62,9 @@ class MenuGUI:
         self.mainWindow.config(menu = menubar)
 
         #Main frame
-        mainFrame = tk.Frame(self.mainWindow,bg="#EAE0DA")
+        mainFrame = tk.Frame(self.mainWindow,bg=self.BG_COLOR)
 
-        spaceTop = tk.Label(mainFrame,text="",bg="#EAE0DA")
+        spaceTop = tk.Label(mainFrame,text="",bg=self.BG_COLOR)
         spaceTop.grid(column=0,row=0,sticky=tk.N,pady=20)
 
         title = tk.Label(mainFrame,text="PATIENTS",bg="#2F58CD",fg="#FFFFFF",font=("Franklin Gothic Heavy",25),width=60)
@@ -99,7 +100,7 @@ class MenuGUI:
         mainFrame.grid(row=0,column=1,sticky="news")
 
         #Button frame
-        buttonFrame = tk.Frame(self.mainWindow,bg="#EAE0DA")
+        buttonFrame = tk.Frame(self.mainWindow,bg=self.BG_COLOR)
 
         newBut = tk.Button(buttonFrame,text="New",font=("Arial",12),command=self.openAdd,anchor=CENTER,width=15,height=2,borderwidth=5)
         newBut.grid(column=0,row=0)
@@ -135,14 +136,14 @@ class MenuGUI:
         self.deleteAccWindow = tk.Toplevel(self.mainWindow)
         self.deleteAccWindow.title("Delete account")
         self.deleteAccWindow.geometry("340x170")
-        self.deleteAccWindow.configure(bg="#EAE0DA")
+        self.deleteAccWindow.configure(bg=self.BG_COLOR)
         self.deleteAccWindow.resizable(FALSE,FALSE)
 
-        self.frameDel1 = tk.Frame(self.deleteAccWindow,bg="#EAE0DA")
+        self.frameDel1 = tk.Frame(self.deleteAccWindow,bg=self.BG_COLOR)
 
         self.pasW = StringVar()
         
-        checkPassword = tk.Label(self.frameDel1,text="Your password:",font=("Arial",14),bg="#EAE0DA")
+        checkPassword = tk.Label(self.frameDel1,text="Your password:",font=("Arial",14),bg=self.BG_COLOR)
         checkPassword.grid(column=0,row=0)
         checkPassEntry = tk.Entry(self.frameDel1,width=20,show="*",font=("Arial",14),textvariable=self.pasW)
         checkPassEntry.grid(column=0,row=1,padx=5)
@@ -157,11 +158,11 @@ class MenuGUI:
 
     def deleteAcc2(self):
         self.frameDel1.destroy()
-        self.frameDel2 = tk.Frame(self.deleteAccWindow,bg="#EAE0DA")
+        self.frameDel2 = tk.Frame(self.deleteAccWindow,bg=self.BG_COLOR)
 
         self.keyword = StringVar()
 
-        key = tk.Label(self.frameDel2,text="Enter \"Delete\" to delete your account:",font=("Arial",14),bg="#EAE0DA")
+        key = tk.Label(self.frameDel2,text="Enter \"Delete\" to delete your account:",font=("Arial",14),bg=self.BG_COLOR)
         key.grid(column=0,row=0)
         keyEntry = tk.Entry(self.frameDel2,width=20,font=("Arial",14),textvariable=self.keyword)
         keyEntry.grid(column=0,row=1,padx=5)
@@ -205,26 +206,26 @@ class MenuGUI:
         self.changePassWindow = tk.Toplevel(self.mainWindow)
         self.changePassWindow.title("Change password")
         self.changePassWindow.geometry("340x280")
-        self.changePassWindow.configure(bg="#EAE0DA")
+        self.changePassWindow.configure(bg=self.BG_COLOR)
         self.changePassWindow.resizable(FALSE,FALSE)
 
-        frame = tk.Frame(self.changePassWindow,bg="#EAE0DA")
+        frame = tk.Frame(self.changePassWindow,bg=self.BG_COLOR)
 
         self.currentPassVar = StringVar()
         self.newPassVar = StringVar()
         self.repNewPassVar = StringVar()
 
-        currentPassword = tk.Label(frame,text="Your password:",font=("Arial",14),bg="#EAE0DA")
+        currentPassword = tk.Label(frame,text="Your password:",font=("Arial",14),bg=self.BG_COLOR)
         currentPassword.grid(column=0,row=0)
         currentPassEntry = tk.Entry(frame,width=20,show="*",font=("Arial",14),textvariable=self.currentPassVar)
         currentPassEntry.grid(column=0,row=1,padx=5)
 
-        newPassword = tk.Label(frame,text="New password:",font=("Arial",14),bg="#EAE0DA")
+        newPassword = tk.Label(frame,text="New password:",font=("Arial",14),bg=self.BG_COLOR)
         newPassword.grid(column=0,row=2)
         newPasswordEntry = tk.Entry(frame,width=20,show="*",font=("Arial",14),textvariable=self.newPassVar)
         newPasswordEntry.grid(column=0,row=3,padx=5)
 
-        repNewPassword = tk.Label(frame,text="Repeat new password:",font=("Arial",14),bg="#EAE0DA")
+        repNewPassword = tk.Label(frame,text="Repeat new password:",font=("Arial",14),bg=self.BG_COLOR)
         repNewPassword.grid(column=0,row=4)
         repNewPasswordEntry = tk.Entry(frame,width=20,show="*",font=("Arial",14),textvariable=self.repNewPassVar)
         repNewPasswordEntry.grid(column=0,row=5,padx=5)
@@ -305,12 +306,12 @@ class MenuGUI:
         self.findByIDWindow = tk.Toplevel(self.mainWindow)
         self.findByIDWindow.title("Find ID")
         self.findByIDWindow.geometry("350x70")
-        self.findByIDWindow.configure(bg="#EAE0DA")
+        self.findByIDWindow.configure(bg=self.BG_COLOR)
         self.findByIDWindow.resizable(FALSE,FALSE)
 
         self.findID = StringVar()
 
-        id = tk.Label(self.findByIDWindow,text="ID",bg="#EAE0DA",font=("Arial",14))
+        id = tk.Label(self.findByIDWindow,text="ID",bg=self.BG_COLOR,font=("Arial",14))
         id.grid(column=0,row=0,padx=40,pady=20,sticky="WNS")
         self.findIDEntry = tk.Entry(self.findByIDWindow,width=10,font=("Arial",14),textvariable=self.findID)
         self.findIDEntry.grid(column=1,row=0,sticky="WNS",pady=20)
@@ -344,44 +345,44 @@ class MenuGUI:
         self.findByIDWindow2 = tk.Toplevel(self.mainWindow)
         self.findByIDWindow2.title("Find ID")
         self.findByIDWindow2.geometry("760x370")
-        self.findByIDWindow2.configure(bg="#EAE0DA")
+        self.findByIDWindow2.configure(bg=self.BG_COLOR)
         self.findByIDWindow2.resizable(FALSE,FALSE)
 
         # self.findID = StringVar()
 
         searchedName,searchedAddress,searchedAge,searchedCondition,searchedCreator = Mod.IDFind(searchedID)
         
-        Welcome = tk.Label(self.findByIDWindow2,text="Find a patient",bg="#EAE0DA",font=("Arial",20,"bold"))
+        Welcome = tk.Label(self.findByIDWindow2,text="Find a patient",bg=self.BG_COLOR,font=("Arial",20,"bold"))
         Welcome.grid(column=3,row=0,columnspan=5,sticky="news",pady=10,ipadx=50)
 
-        id = tk.Label(self.findByIDWindow2,text="ID",bg="#EAE0DA",font=("Arial",14))
+        id = tk.Label(self.findByIDWindow2,text="ID",bg=self.BG_COLOR,font=("Arial",14))
         id.grid(column=0,row=1,padx=40,sticky=tk.W)
-        IDValue = tk.Label(self.findByIDWindow2,text=searchedID,bg="#EAE0DA",fg="#913175",font=("Arial",14))
+        IDValue = tk.Label(self.findByIDWindow2,text=searchedID,bg=self.BG_COLOR,fg="#913175",font=("Arial",14))
         IDValue.grid(column=1,row=1,sticky=tk.W)
 
-        age = tk.Label(self.findByIDWindow2,text="Age",bg="#EAE0DA",font=("Arial",14))
+        age = tk.Label(self.findByIDWindow2,text="Age",bg=self.BG_COLOR,font=("Arial",14))
         age.grid(column=3,row=1,padx=40,sticky=tk.E)
-        ageValue = tk.Label(self.findByIDWindow2,text=searchedAge,bg="#EAE0DA",fg="#913175",font=("Arial",14))
+        ageValue = tk.Label(self.findByIDWindow2,text=searchedAge,bg=self.BG_COLOR,fg="#913175",font=("Arial",14))
         ageValue.grid(column=4,row=1,sticky=tk.W)
 
-        name = tk.Label(self.findByIDWindow2,text="Name",bg="#EAE0DA",font=("Arial",14))
+        name = tk.Label(self.findByIDWindow2,text="Name",bg=self.BG_COLOR,font=("Arial",14))
         name.grid(column=0,row=2,sticky=tk.W,padx=40,columnspan=2)
-        nameValue = tk.Label(self.findByIDWindow2,text=searchedName,bg="#EAE0DA",fg="#913175",font=("Arial",14))
+        nameValue = tk.Label(self.findByIDWindow2,text=searchedName,bg=self.BG_COLOR,fg="#913175",font=("Arial",14))
         nameValue.grid(column=1,row=2,sticky=tk.W,columnspan=4)
 
-        address = tk.Label(self.findByIDWindow2,text="Address",bg="#EAE0DA",font=("Arial",14))
+        address = tk.Label(self.findByIDWindow2,text="Address",bg=self.BG_COLOR,font=("Arial",14))
         address.grid(column=0,row=3,columnspan=2,sticky=tk.W,padx=40)
-        addressValue = tk.Label(self.findByIDWindow2,text=searchedAddress,bg="#EAE0DA",fg="#913175",font=("Arial",14))
+        addressValue = tk.Label(self.findByIDWindow2,text=searchedAddress,bg=self.BG_COLOR,fg="#913175",font=("Arial",14))
         addressValue.grid(column=1,row=3,sticky=tk.W,columnspan=4)
 
-        condition = tk.Label(self.findByIDWindow2,text="Condition",bg="#EAE0DA",font=("Arial",14))
+        condition = tk.Label(self.findByIDWindow2,text="Condition",bg=self.BG_COLOR,font=("Arial",14))
         condition.grid(column=0,row=4,columnspan=2,sticky=tk.W,padx=40)
-        conditionValue = tk.Label(self.findByIDWindow2,text=searchedCondition,bg="#EAE0DA",fg="#913175",font=("Arial",14))
+        conditionValue = tk.Label(self.findByIDWindow2,text=searchedCondition,bg=self.BG_COLOR,fg="#913175",font=("Arial",14))
         conditionValue.grid(column=1,row=4,columnspan=4,sticky=tk.W)
 
-        creator = tk.Label(self.findByIDWindow2,text="Creator",bg="#EAE0DA",font=("Arial",14))
+        creator = tk.Label(self.findByIDWindow2,text="Creator",bg=self.BG_COLOR,font=("Arial",14))
         creator.grid(column=0,row=5,sticky=tk.W,padx=40)
-        creatorName = tk.Label(self.findByIDWindow2,text=searchedCreator,bg="#EAE0DA",fg="#913175",font=("Arial",14,"bold"))
+        creatorName = tk.Label(self.findByIDWindow2,text=searchedCreator,bg=self.BG_COLOR,fg="#913175",font=("Arial",14,"bold"))
         creatorName.grid(column=1,row=5,sticky=tk.W)
 
         Button
@@ -441,7 +442,7 @@ class MenuGUI:
         self.addwindow = tk.Toplevel(self.mainWindow)
         self.addwindow.title("New")
         self.addwindow.geometry("760x490")
-        self.addwindow.configure(bg="#EAE0DA")
+        self.addwindow.configure(bg=self.BG_COLOR)
         self.addwindow.resizable(FALSE,FALSE)
 
         self.newPatientID = StringVar()
@@ -450,45 +451,45 @@ class MenuGUI:
         self.newPatientAge = IntVar()
         self.newPatientCondition = StringVar()
 
-        Welcome = tk.Label(self.addwindow,text="Add new patient",bg="#EAE0DA",font=("Arial",20,"bold"))
+        Welcome = tk.Label(self.addwindow,text="Add new patient",bg=self.BG_COLOR,font=("Arial",20,"bold"))
         Welcome.grid(column=0,row=0,columnspan=10,sticky="news",pady=10)
 
-        id = tk.Label(self.addwindow,text="ID",bg="#EAE0DA",font=("Arial",14))
+        id = tk.Label(self.addwindow,text="ID",bg=self.BG_COLOR,font=("Arial",14))
         id.grid(column=0,row=1,padx=40,sticky=tk.W)
         self.idEntry = tk.Entry(self.addwindow,width=10,font=("Arial",14),textvariable=self.newPatientID)
         self.idEntry.grid(column=1,row=1,sticky=tk.W)
 
-        age = tk.Label(self.addwindow,text="Age",bg="#EAE0DA",font=("Arial",14))
+        age = tk.Label(self.addwindow,text="Age",bg=self.BG_COLOR,font=("Arial",14))
         age.grid(column=3,row=1,padx=40,sticky=tk.E)
         self.ageEntry = tk.Entry(self.addwindow,width=5,font=("Arial",14),textvariable=self.newPatientAge)
         self.ageEntry.grid(column=4,row=1,sticky=tk.W)
 
-        name = tk.Label(self.addwindow,text="Name",bg="#EAE0DA",font=("Arial",14))
+        name = tk.Label(self.addwindow,text="Name",bg=self.BG_COLOR,font=("Arial",14))
         name.grid(column=0,row=2,sticky=tk.W,padx=40)
         self.nameEntry = tk.Entry(self.addwindow,width=50,font=("Arial",14),textvariable=self.newPatientName)
         self.nameEntry.grid(column=1,row=2,sticky=tk.W,columnspan=4)
 
-        address = tk.Label(self.addwindow,text="Address",bg="#EAE0DA",font=("Arial",14))
+        address = tk.Label(self.addwindow,text="Address",bg=self.BG_COLOR,font=("Arial",14))
         address.grid(column=0,row=3,columnspan=2,sticky=tk.W,padx=40)
         self.addressEntry = tk.Entry(self.addwindow,width=50,font=("Arial",14),textvariable=self.newPatientAddress)
         self.addressEntry.grid(column=1,row=3,columnspan=4)
 
-        condition = tk.Label(self.addwindow,text="Condition",bg="#EAE0DA",font=("Arial",14))
+        condition = tk.Label(self.addwindow,text="Condition",bg=self.BG_COLOR,font=("Arial",14))
         condition.grid(column=0,row=4,columnspan=2,sticky=tk.W,padx=40)
         self.conditionEntry = tk.Entry(self.addwindow,width=50,font=("Arial",14),textvariable=self.newPatientCondition)
         self.conditionEntry.grid(column=1,row=4,columnspan=4,sticky=tk.W)
 
-        creator = tk.Label(self.addwindow,text="Creator",bg="#EAE0DA",font=("Arial",14))
+        creator = tk.Label(self.addwindow,text="Creator",bg=self.BG_COLOR,font=("Arial",14))
         creator.grid(column=0,row=5,sticky=tk.W,padx=40)
-        self.creatorName = tk.Label(self.addwindow,text=self.user,bg="#EAE0DA",fg="#913175",font=("Arial",14,"bold"))
+        self.creatorName = tk.Label(self.addwindow,text=self.user,bg=self.BG_COLOR,fg="#913175",font=("Arial",14,"bold"))
         self.creatorName.grid(column=1,row=5,sticky=tk.W)
         
-        advice = tk.Label(self.addwindow,text="Advice",bg="#EAE0DA",font=("Arial",14))
+        advice = tk.Label(self.addwindow,text="Advice",bg=self.BG_COLOR,font=("Arial",14))
         advice.grid(column=0,row=6,sticky=tk.W,padx=40)
         self.adviceEntry = tk.Text(self.addwindow,width=60,height=5,font=("Arial",14))
         self.adviceEntry.grid(column=0,row=7,columnspan=10,sticky="news",padx=40)
 
-        space=tk.Label(self.addwindow,text="",bg="#EAE0DA")
+        space=tk.Label(self.addwindow,text="",bg=self.BG_COLOR)
         space.grid(column=0,row=8,pady=10)
 
         #Button
@@ -554,7 +555,7 @@ class MenuGUI:
             self.modifyWindow = tk.Toplevel(self.mainWindow)
             self.modifyWindow.title("Modify")
             self.modifyWindow.geometry("760x690")
-            self.modifyWindow.configure(bg="#EAE0DA")
+            self.modifyWindow.configure(bg=self.BG_COLOR)
             self.modifyWindow.resizable(FALSE,FALSE)
             
             self.modifyPatientName = StringVar()
@@ -563,83 +564,83 @@ class MenuGUI:
             self.modifyPatientCondition = StringVar()
 
             #Welcome
-            Welcome = tk.Label(self.modifyWindow,text="Current",bg="#EAE0DA",font=("Arial",20,"bold"))
+            Welcome = tk.Label(self.modifyWindow,text="Current",bg=self.BG_COLOR,font=("Arial",20,"bold"))
             Welcome.grid(column=0,row=0,columnspan=5,sticky="news",pady=10,ipadx=50)
 
             #Old data
-            id = tk.Label(self.modifyWindow,text="ID",bg="#EAE0DA",font=("Arial",14))
+            id = tk.Label(self.modifyWindow,text="ID",bg=self.BG_COLOR,font=("Arial",14))
             id.grid(column=0,row=1,padx=40,sticky=tk.W)
-            idEntry = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][0],bg="#EAE0DA",font=("Arial",14))
+            idEntry = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][0],bg=self.BG_COLOR,font=("Arial",14))
             idEntry.grid(column=1,row=1,sticky=tk.W)
 
-            age = tk.Label(self.modifyWindow,text="Age",bg="#EAE0DA",font=("Arial",14))
+            age = tk.Label(self.modifyWindow,text="Age",bg=self.BG_COLOR,font=("Arial",14))
             age.grid(column=3,row=1,padx=40,sticky=tk.W)
-            ageEntry = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][3],bg="#EAE0DA",font=("Arial",14))
+            ageEntry = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][3],bg=self.BG_COLOR,font=("Arial",14))
             ageEntry.grid(column=4,row=1,sticky=tk.W)
 
-            name = tk.Label(self.modifyWindow,text="Name",bg="#EAE0DA",font=("Arial",14))
+            name = tk.Label(self.modifyWindow,text="Name",bg=self.BG_COLOR,font=("Arial",14))
             name.grid(column=0,row=2,sticky=tk.W,padx=40,columnspan=2)
-            nameEntry = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][1],bg="#EAE0DA",font=("Arial",14))
+            nameEntry = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][1],bg=self.BG_COLOR,font=("Arial",14))
             nameEntry.grid(column=1,row=2,sticky=tk.W,columnspan=4)
 
-            address = tk.Label(self.modifyWindow,text="Address",bg="#EAE0DA",font=("Arial",14))
+            address = tk.Label(self.modifyWindow,text="Address",bg=self.BG_COLOR,font=("Arial",14))
             address.grid(column=0,row=3,columnspan=2,sticky=tk.W,padx=40)
-            addressEntry = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][2],bg="#EAE0DA",font=("Arial",14))
+            addressEntry = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][2],bg=self.BG_COLOR,font=("Arial",14))
             addressEntry.grid(column=1,row=3,columnspan=4,sticky=tk.W)
 
-            condition = tk.Label(self.modifyWindow,text="Condition",bg="#EAE0DA",font=("Arial",14))
+            condition = tk.Label(self.modifyWindow,text="Condition",bg=self.BG_COLOR,font=("Arial",14))
             condition.grid(column=0,row=4,columnspan=2,sticky=tk.W,padx=40)
-            conditionEntry = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][4],bg="#EAE0DA",font=("Arial",14))
+            conditionEntry = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][4],bg=self.BG_COLOR,font=("Arial",14))
             conditionEntry.grid(column=1,row=4,columnspan=4,sticky=tk.W)
 
-            creator = tk.Label(self.modifyWindow,text="Creator",bg="#EAE0DA",font=("Arial",14))
+            creator = tk.Label(self.modifyWindow,text="Creator",bg=self.BG_COLOR,font=("Arial",14))
             creator.grid(column=0,row=5,sticky=tk.W,padx=40)
-            creatorName = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][5],bg="#EAE0DA",font=("Arial",14))
+            creatorName = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][5],bg=self.BG_COLOR,font=("Arial",14))
             creatorName.grid(column=1,row=5,sticky=tk.W)
             
-            space=tk.Label(self.modifyWindow,text="",bg="#EAE0DA")
+            space=tk.Label(self.modifyWindow,text="",bg=self.BG_COLOR)
             space.grid(column=0,row=6,pady=10)
 
             #New data
-            Welcome2 = tk.Label(self.modifyWindow,text="Update",bg="#EAE0DA",font=("Arial",20,"bold"))
+            Welcome2 = tk.Label(self.modifyWindow,text="Update",bg=self.BG_COLOR,font=("Arial",20,"bold"))
             Welcome2.grid(column=0,row=7,columnspan=5,sticky="news",pady=10,ipadx=50)
 
-            id2 = tk.Label(self.modifyWindow,text="ID",bg="#EAE0DA",font=("Arial",14))
+            id2 = tk.Label(self.modifyWindow,text="ID",bg=self.BG_COLOR,font=("Arial",14))
             id2.grid(column=0,row=8,padx=40,sticky=tk.W)
-            self.idEntry2 = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][0],bg="#EAE0DA",font=("Arial",14))
+            self.idEntry2 = tk.Label(self.modifyWindow,text=self.tv.item(selectedItem)['values'][0],bg=self.BG_COLOR,font=("Arial",14))
             self.idEntry2.grid(column=1,row=8,sticky=tk.W)
 
-            age2 = tk.Label(self.modifyWindow,text="Age",bg="#EAE0DA",font=("Arial",14))
+            age2 = tk.Label(self.modifyWindow,text="Age",bg=self.BG_COLOR,font=("Arial",14))
             age2.grid(column=3,row=8,padx=40,sticky=tk.W)
             self.ageEntry2 = tk.Entry(self.modifyWindow,width=5,font=("Arial",14),textvariable=self.modifyPatientAge)
             self.ageEntry2.grid(column=4,row=8,sticky=tk.W)
 
-            name2 = tk.Label(self.modifyWindow,text="Name",bg="#EAE0DA",font=("Arial",14))
+            name2 = tk.Label(self.modifyWindow,text="Name",bg=self.BG_COLOR,font=("Arial",14))
             name2.grid(column=0,row=9,sticky=tk.W,padx=40,columnspan=2)
             self.nameEntry2 = tk.Entry(self.modifyWindow,width=50,font=("Arial",14),textvariable=self.modifyPatientName)
             self.nameEntry2.grid(column=1,row=9,sticky=tk.W,columnspan=4)
 
-            address2 = tk.Label(self.modifyWindow,text="Address",bg="#EAE0DA",font=("Arial",14))
+            address2 = tk.Label(self.modifyWindow,text="Address",bg=self.BG_COLOR,font=("Arial",14))
             address2.grid(column=0,row=10,columnspan=2,sticky=tk.W,padx=40)
             self.addressEntry2 = tk.Entry(self.modifyWindow,width=50,font=("Arial",14),textvariable=self.modifyPatientAddress)
             self.addressEntry2.grid(column=1,row=10,columnspan=4,sticky=tk.W)
 
-            condition2 = tk.Label(self.modifyWindow,text="Condition",bg="#EAE0DA",font=("Arial",14))
+            condition2 = tk.Label(self.modifyWindow,text="Condition",bg=self.BG_COLOR,font=("Arial",14))
             condition2.grid(column=0,row=11,columnspan=2,sticky=tk.W,padx=40)
             self.conditionEntry2 = tk.Entry(self.modifyWindow,width=50,font=("Arial",14),textvariable=self.modifyPatientCondition)
             self.conditionEntry2.grid(column=1,row=11,columnspan=4,sticky=tk.W)
 
-            creator2 = tk.Label(self.modifyWindow,text="Creator",bg="#EAE0DA",font=("Arial",14))
+            creator2 = tk.Label(self.modifyWindow,text="Creator",bg=self.BG_COLOR,font=("Arial",14))
             creator2.grid(column=0,row=12,sticky=tk.W,padx=40)
-            creatorName2 = tk.Label(self.modifyWindow,text=self.user,bg="#EAE0DA",fg="#913175",font=("Arial",14,"bold"))
+            creatorName2 = tk.Label(self.modifyWindow,text=self.user,bg=self.BG_COLOR,fg="#913175",font=("Arial",14,"bold"))
             creatorName2.grid(column=1,row=12,sticky=tk.W)
 
-            advice = tk.Label(self.modifyWindow,text="Advice",bg="#EAE0DA",font=("Arial",14))
+            advice = tk.Label(self.modifyWindow,text="Advice",bg=self.BG_COLOR,font=("Arial",14))
             advice.grid(column=0,row=13,sticky=tk.W,padx=40)
             self.adviceEntry2 = tk.Text(self.modifyWindow,width=60,height=5,font=("Arial",14))
             self.adviceEntry2.grid(column=0,row=14,columnspan=10,sticky="news",padx=40)
 
-            space=tk.Label(self.modifyWindow,text="",bg="#EAE0DA")
+            space=tk.Label(self.modifyWindow,text="",bg=self.BG_COLOR)
             space.grid(column=0,row=15,pady=10)
 
             #Button
