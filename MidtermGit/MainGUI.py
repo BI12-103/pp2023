@@ -42,7 +42,6 @@ class MenuGUI:
         edit.add_command(label ="Sort by age", command = self.sort)
         edit.add_separator()
         edit.add_command(label ="Find by ID", command = self.openFindByID)
-        # edit.add_command(label ="Find by symptoms", command = self.findBySymptoms)
 
         #Adding sercurity
         sercurity = Menu(menubar, tearoff = 0)
@@ -61,21 +60,37 @@ class MenuGUI:
         # display Menu
         self.mainWindow.config(menu = menubar)
 
-        #Main frame
-        mainFrame = tk.Frame(self.mainWindow,bg=self.BG_COLOR)
+        # spaceTop = tk.Label(mainFrame,text="",bg=self.BG_COLOR)
+        # spaceTop.grid(column=0,row=0,sticky=tk.N,pady=20)
 
-        spaceTop = tk.Label(mainFrame,text="",bg=self.BG_COLOR)
-        spaceTop.grid(column=0,row=0,sticky=tk.N,pady=20)
+        title = tk.Label(self.mainWindow,text="PATIENTS",bg="#2F58CD",fg="#FFFFFF",font=("Franklin Gothic Heavy",25),width=60)
+        title.grid(column=0,row=0,pady=5,columnspan=2)
 
-        title = tk.Label(mainFrame,text="PATIENTS",bg="#2F58CD",fg="#FFFFFF",font=("Franklin Gothic Heavy",25),width=60)
-        title.grid(column=0,row=1,pady=5)
+        #Search frame
+        self.ChoiceVar = StringVar()
+
+        searchFrame = tk.Frame(self.mainWindow,bg=self.BG_COLOR)
+
+        self.Choice = ttk.Combobox(searchFrame,values=['ID', 'Name', 'Address', 'Age', 'Condition','Creator'],width=15)
+        self.Choice.grid(column=0,row=1,pady=5)
+
+        choiceEntry = tk.Entry(searchFrame,width=70,font=("Arial",14),textvariable=self.ChoiceVar)
+        choiceEntry.grid(column=1,row=1,pady=5)
+
+        searchBut = tk.Button(searchFrame,text="Search",font=("Arial",14),command=self.on_searching)
+        searchBut.grid(column=2,row=1,pady=5,padx=10)
+
+        searchFrame.grid(column=0,row=1,columnspan=2)
+
+        #Tree view frame
+        treeviewFrame = tk.Frame(self.mainWindow,bg=self.BG_COLOR)
 
         #Tree view
         Columns = ("ID", "Name", "Address", "Age", "Condition", "Creator")
-        self.tv = ttk.Treeview(mainFrame,height=33,columns=Columns,show="headings")
+        self.tv = ttk.Treeview(treeviewFrame,height=33,columns=Columns,show="headings")
         self.tv.grid(row=2,column=0,sticky="news")
 
-        treescrolly = ttk.Scrollbar(mainFrame,orient="vertical",command=self.tv.yview)
+        treescrolly = ttk.Scrollbar(treeviewFrame,orient="vertical",command=self.tv.yview)
         self.tv.configure(yscrollcommand=treescrolly.set)
         treescrolly.grid(row=2,column=1,sticky=tk.NS)
 
@@ -97,7 +112,7 @@ class MenuGUI:
         #Display data to table
         self.show_data()
 
-        mainFrame.grid(row=0,column=1,sticky="news")
+        treeviewFrame.grid(row=2,column=0,sticky=tk.E,padx=50)
 
         #Button frame
         buttonFrame = tk.Frame(self.mainWindow,bg=self.BG_COLOR)
@@ -117,9 +132,51 @@ class MenuGUI:
         exitBut = tk.Button(buttonFrame,text="Exit",font=("Arial",12),command=self.on_closing,width=15,height=2,anchor=CENTER,borderwidth=5)
         exitBut.grid(column=0,row=4)
 
-        buttonFrame.grid(row=0,column=2,sticky=tk.E,padx=10)
+        buttonFrame.grid(row=2,column=1,sticky=tk.W,padx=10)
 
         self.mainWindow.mainloop()
+
+    def on_searching(self):
+        #Search nothing
+        if len(self.ChoiceVar.get()) == 0:
+            self.refresh()    
+        #Search by ID
+        elif self.Choice.get() == "ID":
+            self.clear_all()
+            for patient in Mod.PatientDatabase.patient_list:
+                if self.ChoiceVar.get().lower() in patient.get_id().lower():
+                    self.tv.insert("","end",values=Mod.displayData(patient))
+        #Search by name
+        elif self.Choice.get() == "Name":
+            self.clear_all()
+            for patient in Mod.PatientDatabase.patient_list:
+                if self.ChoiceVar.get().lower() in patient.get_name().lower():
+                    self.tv.insert("","end",values=Mod.displayData(patient))
+        #Search by address
+        elif self.Choice.get() == "Address":
+            self.clear_all()
+            for patient in Mod.PatientDatabase.patient_list:
+                if self.ChoiceVar.get().lower() in patient.get_address().lower():
+                    self.tv.insert("","end",values=Mod.displayData(patient))
+        #Search by age
+        elif self.Choice.get() == "Age":
+            self.clear_all()
+            for patient in Mod.PatientDatabase.patient_list:
+                if self.ChoiceVar.get() == str(patient.get_age()):
+                    self.tv.insert("","end",values=Mod.displayData(patient))
+        #Search by condition
+        elif self.Choice.get() == "Condition":
+            self.clear_all()
+            for patient in Mod.PatientDatabase.patient_list:
+                if self.ChoiceVar.get().lower() in patient.get_condition().lower():
+                    self.tv.insert("","end",values=Mod.displayData(patient))
+        #Search by creator
+        elif self.Choice.get() == "Creator":
+            self.clear_all()
+            for patient in Mod.PatientDatabase.patient_list:
+                if self.ChoiceVar.get().lower() in patient.get_creator().lower():
+                    self.tv.insert("","end",values=Mod.displayData(patient))
+            
 
     def openDelAcc(self):
         if self.popup == False:

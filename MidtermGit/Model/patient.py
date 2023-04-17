@@ -69,16 +69,6 @@ class PatientDatabase:
             if patient.get_id() == str(id):
                 return patient
 
-    # def find_patients_by_symptoms(self, symptoms):
-    #     print("Patients with symptoms:")
-    #     for patient in self.patient_list:
-    #         if symptoms in patient.get_condition():
-    #             print("ID:", patient.get_id())
-    #             print("Name:", patient.get_name())
-    #             print("Address:", patient.get_address())
-    #             print("Age:", patient.get_age())
-    #             print("Condition:", patient.get_condition())
-
     def save_to_csv(self):
         with open("patients.csv", mode='w', newline='') as csv_file:
             fieldnames = ['ID', 'Name', 'Address', 'Age', 'Condition','Creator','Advice']
