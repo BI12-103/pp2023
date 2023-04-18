@@ -15,6 +15,7 @@ class Login:
         self.loginWindow.title("Human Health Information Management System")
         self.loginWindow.geometry("340x440")
         self.loginWindow.configure(bg=self.BG_COLOR)
+        self.loginWindow.resizable(FALSE,FALSE)
         
         #Limit top level window
         self.popup = False

@@ -43,13 +43,6 @@ class UserDatabase:
                 return user
         return None
 
-    # def update_user(self, user, username=None, password=None):
-    #     if username:
-    #         user.set_username(username)
-    #     if password:
-    #         user.set_password(password)
-    #     self.save_to_csv()
-
     def save_to_csv(self,user):
         with open("user.csv", mode='a', newline='') as csv_file:
             writer = csv.writer(csv_file)
@@ -72,13 +65,6 @@ class UserDatabase:
         except FileNotFoundError:
             f = open("user.csv","w")
             f.close()
-
-    # def login(self, username, password):
-    #     for user in self.__user_list:
-    #         if user.get_username() == username and user.get_password() == password:
-    #             print("Login successful!")
-    #             return
-    #     print("Invalid username or password.")
 
     def changePass(self,name,pas):
         for user in self.userList:

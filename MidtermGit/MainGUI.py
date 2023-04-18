@@ -73,6 +73,7 @@ class MenuGUI:
 
         self.Choice = ttk.Combobox(searchFrame,values=['ID', 'Name', 'Address', 'Age', 'Condition','Creator'],width=15)
         self.Choice.grid(column=0,row=1,pady=5)
+        self.Choice.current(0)
 
         choiceEntry = tk.Entry(searchFrame,width=70,font=("Arial",14),textvariable=self.ChoiceVar)
         choiceEntry.grid(column=1,row=1,pady=5)
@@ -258,7 +259,7 @@ class MenuGUI:
         else:
             messagebox.showerror(title="Failed",message="Another top level is existing")
 
-    #Change pass GUI
+    #GUI for changing password
     def changePass(self):
         self.changePassWindow = tk.Toplevel(self.mainWindow)
         self.changePassWindow.title("Change password")

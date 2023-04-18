@@ -1,15 +1,16 @@
 ID,Name,Address,Age,Condition,Creator,Advice
-BI1,Khoa,Ha Noi,9,Frezze,Dung,Drink water
-II,Trung,Paris,90,Stomachache,Dung,Sleep
 17,Thanh,VietNam,99,Covid,Dung,Eat vegetable
-88,Minh,Quy Nhon,55,Sick,Dung,Drink more water
-BI2,Nam,VietNam,19,Fever,Dung123,Drink more water
-MK9,Phuong,Ha Noi,13,Rash,Dung123,I don't know
-H111,Hoa,Hai Duong,25,Headache,Dung123,Sleep
-H123,Hoang,Ca Mau,59,Sprain,Hai09,Don't run
-P911,Minh,Ninh Binh,18,Infection,Dung,Enjoy your last momment
-M110,Trang,Ha Nam,19,Hepatitis,Dung,Don't drink wine
-P001,Thao,Nam Dinh,43,Typhoid,Dung,Enjoy your day
+II,Trung,Paris,90,Stomachache,Dung,Sleep
 BN11,Quang,Cao Bang,77,Heart attack,Dung,Defend it
-KK02,Dupont,Marseille,30,Cough,Dung,Dormir!
+H123,Hoang,Ca Mau,59,Sprain,Hai09,Don't run
+88,Minh,Quy Nhon,55,Sick,Dung,Drink more water
+P001,Thao,Nam Dinh,43,Typhoid,Dung,Enjoy your day
 MM11,Phong,Sai Gon,37,Sneeze,Dung,Go sleep more
+KK02,Dupont,Marseille,30,Cough,Dung,Dormir!
+H111,Hoa,Hai Duong,25,Headache,Dung123,Sleep
+BI2,Nam,VietNam,19,Fever,Dung123,Drink more water
+M110,Trang,Ha Nam,19,Hepatitis,Dung,Don't drink wine
+BI09,Ha,Ha Noi,19,Fever,Hieu,Sleep more
+BI1,Khoa,Ha Noi,9,Frezze,Dung,Drink water
+P911,Minh,Ninh Binh,18,Infection,Dung,Enjoy your last momment
+KK11,Dung,Quang Ninh,19,Covid,Hai09,Drink more water

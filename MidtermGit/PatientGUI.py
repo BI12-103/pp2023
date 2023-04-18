@@ -65,8 +65,8 @@ class PatientGUI:
 
         searchedName,searchedAddress,searchedAge,searchedCondition,searchedCreator,searchedAdvice = Mod.IDFindFull(searchedID)
         
-        Welcome = tk.Label(self.patientInfoWindow,text="Your information",bg=self.BG_COLOR_SEARCH,font=("Arial",20,"bold"))
-        Welcome.grid(column=3,row=0,columnspan=5,sticky="news",pady=10,ipadx=50)
+        Welcome = tk.Label(self.patientInfoWindow,text="Your information",bg=self.BG_COLOR_SEARCH,font=("Arial",20,"bold"),anchor=CENTER)
+        Welcome.grid(column=0,row=0,columnspan=10,pady=10,ipadx=50)
 
         id = tk.Label(self.patientInfoWindow,text="ID",bg=self.BG_COLOR_SEARCH,font=("Arial",14))
         id.grid(column=0,row=1,padx=40,sticky=tk.W)
